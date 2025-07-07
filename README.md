@@ -1,139 +1,182 @@
-📚 Projeto da API de Livraria – Backend (Node.js + Docker)
+---
 
-🧾 Visão Geral
-
-Este projeto consiste na construção de uma API RESTful para uma livraria online, com backend desenvolvido em JavaScript (Node.js) e conteinerizado com Docker. O sistema permitirá gerenciamento completo do catálogo de livros, carrinho, pedidos, avaliações e administração.
+# 📚 API da Livraria
 
 ---
 
-🧱 Tecnologias Utilizadas
+## 🔧 Estrutura Geral
 
-Linguagem: JavaScript (Node.js)
-
-Framework: Express.js
-
-Banco de dados: PostgreSQL ou MongoDB
-
-Autenticação: JWT
-
-Docker: Para empacotamento e execução de todo o ambiente (API + banco)
-
-Bibliotecas úteis:
-
-express, cors, jsonwebtoken, mongoose ou pg, dotenv, etc.
+Este projeto é uma **API RESTful** desenvolvida com **Java e Spring Boot**, conteinerizada com **Docker** e conectada a um banco de dados relacional (PostgreSQL). A API oferece funcionalidades completas para gerenciamento de uma livraria online: livros, usuários, pedidos, avaliações e administração.
 
 ---
 
-📦 Funcionalidades da API
+## ✅ Funcionalidades que serão implementadas
 
-1. 📖 Catálogo de Livros
+### 1. **Catálogo de Livros**
 
-Listar todos os livros
+* Criar entidade `Book`
+* Controlador REST para:
 
-Ver detalhes de um livro
-
-Buscar por título ou ISBN
-
-Filtrar por autor, gênero, idioma, faixa de preço
-
-
-2. 👤 Autores
-
-Listar autores
-
-Ver detalhes
-
-Associar livros a autores
-
-CRUD para admin
-
-
-3. 🏢 Editoras
-
-Listar editoras
-
-Associar livros
-
-CRUD para admin
-
-
-4. 🏷️ Gêneros
-
-Listar gêneros
-
-Filtrar livros por gênero
-
-CRUD para admin
-
-
-5. 👥 Usuários / Clientes
-
-Cadastro e login
-
-Ver/editar perfil
-
-Histórico de compras
-
-Marcar favoritos
-
-
-6. 🛒 Carrinho de Compras
-
-Adicionar/remover/editar itens
-
-Ver resumo do carrinho
-
-
-7. 🧾 Pedidos
-
-Finalizar pedido
-
-Ver histórico e status
-
-Gerenciamento por admin
-
-
-8. ⭐ Avaliações e Comentários
-
-Avaliar livros (1-5 estrelas)
-
-Comentar e visualizar comentários
-
-
-9. ⚙️ Administração (Área Protegida)
-
-Gerenciar livros, autores, editoras e gêneros
-
-Acompanhar pedidos
-
-Ver estatísticas:
-
-Mais vendidos
-
-Melhor avaliados
+  * Listar todos os livros
+  * Ver detalhes de um livro
+  * Filtrar por autor, gênero, idioma e preço
+  * Buscar por título ou ISBN
+* Relacionamentos com autor, editora e gênero
 
 ---
 
-🛡️ Autenticação e Autorização
+### 2. **Autores**
 
-Sistema baseado em JWT
+* Entidade `Author`
+* Endpoints para:
 
-Rotas públicas e rotas protegidas
-
-Regras de acesso para:
-
-Usuário comum
-
-Administrador
+  * Listar autores
+  * Ver detalhes
+  * Criar, editar e excluir autores (admin)
+* Um autor pode ter vários livros
 
 ---
 
-🐳 Docker
+### 3. **Editoras**
 
-O projeto será executado em containers com Docker:
+* Entidade `Publisher`
+* Endpoints para:
 
-API: Container com Node.js
+  * Listar editoras
+  * CRUD completo (admin)
+* Relacionamento com livros (1\:N)
 
-Banco de dados: PostgreSQL ou MongoDB em container separado
+---
 
-Arquivo docker-compose.yml para orquestração dos serviços
+### 4. **Gêneros**
+
+* Entidade `Genre`
+* Endpoints para:
+
+  * Listar e gerenciar gêneros
+  * Filtrar livros por gênero
+
+---
+
+### 5. **Usuários / Clientes**
+
+* Entidade `User`
+* Cadastro e login com JWT
+* Endpoints para:
+
+  * Criar conta
+  * Autenticar
+  * Visualizar e editar perfil
+  * Ver histórico de pedidos
+  * Adicionar livros aos favoritos
+* Proteção de rotas com `Spring Security`
+
+---
+
+### 6. **Carrinho de Compras**
+
+* Entidade `CartItem`
+* Relacionamento com `User` e `Book`
+* Funcionalidades:
+
+  * Adicionar livro
+  * Atualizar quantidade
+  * Remover item
+  * Ver total do carrinho
+
+---
+
+### 7. **Pedidos**
+
+* Entidades `Order` e `OrderItem`
+* Endpoints para:
+
+  * Finalizar pedido
+  * Ver pedidos do usuário
+  * Ver status: preparando, enviado, entregue
+  * Admin pode gerenciar todos os pedidos
+
+---
+
+### 8. **Avaliações e Comentários**
+
+* Entidade `Review`
+* Funcionalidades:
+
+  * Avaliar livros (1 a 5 estrelas)
+  * Comentar livros
+  * Ver comentários e média de avaliações
+
+---
+
+### 9. **Administração**
+
+* Permissões baseadas em roles (`ROLE_USER`, `ROLE_ADMIN`)
+* Endpoints protegidos com `@PreAuthorize`
+* Admin pode:
+
+  * Criar, editar, excluir livros, autores, editoras e gêneros
+  * Atualizar pedidos
+  * Visualizar estatísticas
+
+---
+
+# 🛠️ Backend – O que será feito no Spring Boot
+
+---
+
+## 📦 Entidades principais (JPA)
+
+* `Book`, `Author`, `Publisher`, `Genre`
+* `User`, `CartItem`, `Order`, `OrderItem`, `Review`
+
+## 🔁 Relacionamentos
+
+* `Book` → `Author`, `Publisher`, `Genre` (muitos-para-um)
+* `User` → `CartItem`, `Order`, `Review`
+* `Order` → `OrderItem` (um-para-muitos)
+
+---
+
+## 🔐 Autenticação e Segurança
+
+* JWT com `Spring Security`
+* Criação de `AuthenticationFilter`, `JwtProvider`
+* Roles: `USER` e `ADMIN`
+* Anotações:
+
+  * `@PreAuthorize("hasRole('ADMIN')")` para proteger endpoints de admin
+  * `@Secured`, `@EnableGlobalMethodSecurity` habilitadas
+
+---
+
+## 🧱 Estrutura dos pacotes
+
+```
+/src/main/java/com/seuprojeto/livraria
+├── controller
+├── dto
+├── entity
+├── repository
+├── service
+├── config
+├── security
+└── LivrariaApplication.java
+```
+
+---
+
+## 🐳 Integração com Docker
+
+* `Dockerfile` para empacotar a aplicação Spring Boot
+* `docker-compose.yml` com:
+
+  * API (Spring Boot)
+  * Banco PostgreSQL
+* `.env` ou `application.yml` com:
+
+  * Configuração do banco
+  * Porta
+  * JWT secret
+
+---
