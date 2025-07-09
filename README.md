@@ -180,3 +180,4 @@ Este projeto é uma **API RESTful** desenvolvida com **Java e Spring Boot**, con
   * JWT secret
 
 ---
+intregacao com supebase
